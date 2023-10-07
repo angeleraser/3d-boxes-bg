@@ -27,8 +27,8 @@ function createMagicBackground({
   onClick,
 }) {
   function setBoxSize(value) {
-    const marginX = value * 0.1;
-    root.style.setProperty("--bg-size", `${value - marginX}px`);
+    const marginX = value * 0.3;
+    root.style.setProperty("--root-size", `${value - marginX}px`);
   }
 
   function setUrl(url) {
@@ -36,9 +36,8 @@ function createMagicBackground({
   }
 
   const root = document.createElement("div");
-
+  root.style.setProperty("--grid-size", gridSize);
   root.classList.add("background");
-  root.style.gridTemplateColumns = "1fr ".repeat(gridSize);
 
   setBoxSize(window.innerWidth <= rootSize ? window.innerWidth : rootSize);
   setUrl(primaryUrl);
@@ -50,14 +49,13 @@ function createMagicBackground({
     onClick?.();
   });
 
+  const boxSize = `var(--root-size) / ${gridSize}`;
   for (let rowId = 0; rowId < gridSize; rowId++) {
     for (let colId = 0; colId < gridSize; colId++) {
       root.innerHTML += `
       <div
         class="background-box"
-        style="background-position:
-        calc((var(--bg-size) / ${gridSize}) * ${-colId}) 
-        calc((var(--bg-size) / ${gridSize}) * ${-rowId});">
+        style="background-position: calc((${boxSize}) * ${-colId}) calc((${boxSize}) * ${-rowId});">
       </div>`;
     }
   }
@@ -72,7 +70,7 @@ function createMagicBackground({
 
 const component = createMagicBackground({
   gridSize: 4,
-  rootSize: 500,
+  rootSize: 600,
   primaryUrl: "https://media.giphy.com/media/4Zo41lhzKt6iZ8xff9/giphy.gif",
   secondaryUrl: "https://media.giphy.com/media/3CIxYBdTB4KjYGtfGC/giphy.gif",
   onClick: showTerrorEffect,

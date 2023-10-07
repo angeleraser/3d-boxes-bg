@@ -26,7 +26,7 @@
 }
 
 .app.dark .background {
-  animation: shake .4s;
+  animation: shake 0.4s;
   animation-delay: 0.2s;
 }
 
@@ -89,28 +89,31 @@
 }
 
 .background {
-  --bg-size: 400px;
+  --root-size: 0;
+  --grid-size: 0;
   --bg-url: url("");
 
   aspect-ratio: 1 / 1;
   cursor: pointer;
   display: grid;
-  height: var(--bg-size);
-  width: var(--bg-size);
+  grid-template-columns: repeat(var(--grid-size), 1fr);
+  height: var(--root-size);
+  width: var(--root-size);
 }
 
 .background-box {
   background-image: var(--bg-url);
   background-repeat: no-repeat;
-  background-size: var(--bg-size) var(--bg-size);
-  height: 100%;
+  background-size: var(--root-size) var(--root-size);
+  height: calc(var(--root-size) / var(--grid-size));
   position: relative;
   transition: 0.4s transform ease-in-out;
-  width: 100%;
+  width: calc(var(--root-size) / var(--grid-size));
 }
 
 .background.animated {
-  gap: calc(var(--bg-size) * 0.05);
+  gap: calc(var(--root-size) * 0.05);
+  margin-left: calc(((var(--root-size) * 0.05) * var(--grid-size)) * -1);
 }
 
 .background.animated .background-box {
