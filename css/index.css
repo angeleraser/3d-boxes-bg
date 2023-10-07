@@ -26,13 +26,14 @@
 }
 
 .app.dark .background {
-  animation: shake 0.4s;
+  animation: shake .4s;
   animation-delay: 0.2s;
 }
 
 @keyframes shake {
   0% {
     transform: translateX(-10px);
+    scale: 5;
   }
 
   10% {
@@ -73,6 +74,7 @@
 
   10% {
     transform: translateX(0px);
+    scale: 1;
   }
 }
 

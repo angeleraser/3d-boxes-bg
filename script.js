@@ -1,3 +1,24 @@
+let timeoutId;
+function showTerrorEffect() {
+  const body = document.body;
+  const terrorSound = document.getElementById("terror-sound");
+
+  body.classList.toggle("dark");
+
+  function stopSound() {
+    terrorSound.pause();
+    terrorSound.currentTime = 0;
+    clearTimeout(timeoutId);
+  }
+
+  if (body.classList.contains("dark")) {
+    terrorSound.currentTime = 0;
+    terrorSound.play();
+    window.navigator?.vibrate?.(1500);
+    timeoutId = setTimeout(stopSound, 3100);
+  } else stopSound();
+}
+
 function createMagicBackground({
   gridSize = 0,
   rootSize = 0,
@@ -47,28 +68,6 @@ function createMagicBackground({
       setBoxSize(window.innerWidth <= rootSize ? window.innerWidth : rootSize);
     },
   };
-}
-
-let timeoutId;
-
-function showTerrorEffect() {
-  const body = document.body;
-  const terrorSound = document.getElementById("terror-sound");
-
-  body.classList.toggle("dark");
-
-  function stopSound() {
-    terrorSound.pause();
-    terrorSound.currentTime = 0;
-    clearTimeout(timeoutId);
-  }
-
-  if (body.classList.contains("dark")) {
-    terrorSound.currentTime = 0;
-    terrorSound.play();
-    window.navigator?.vibrate?.(200);
-    timeoutId = setTimeout(stopSound, 3100);
-  } else stopSound();
 }
 
 const component = createMagicBackground({
