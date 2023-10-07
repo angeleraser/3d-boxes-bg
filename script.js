@@ -1,21 +1,33 @@
-const gifUrls = ["https://media.giphy.com/media/8ciNNLBwEfNZrPm9l8/giphy.gif"];
-
-/**
- * @param {{gridSize: number, rootSize: number, gifUrl: string}} config All sizes are in px unit
- */
-function createMagicBackground({ gridSize = 0, rootSize = 0, gifUrl = "" }) {
-  const root = document.createElement("div");
-
-  function setRootSize(value) {
+function createMagicBackground({
+  gridSize = 0,
+  rootSize = 0,
+  primaryUrl,
+  secondaryUrl,
+  onClick,
+}) {
+  function setBoxSize(value) {
     const marginX = value * 0.1;
     root.style.setProperty("--bg-size", `${value - marginX}px`);
   }
 
+  function setUrl(url) {
+    root.style.setProperty("--bg-url", `url(${url})`);
+  }
+
+  const root = document.createElement("div");
+
   root.classList.add("background");
-  setRootSize(window.innerWidth <= rootSize ? window.innerWidth : rootSize);
-  root.style.setProperty("--bg-url", `url(${gifUrl})`);
   root.style.gridTemplateColumns = "1fr ".repeat(gridSize);
-  root.addEventListener("click", () => root.classList.toggle("animated"));
+
+  setBoxSize(window.innerWidth <= rootSize ? window.innerWidth : rootSize);
+  setUrl(primaryUrl);
+
+  root.addEventListener("click", function () {
+    root.classList.toggle("animated");
+    const hasSecondary = root.classList.contains("animated") && secondaryUrl;
+    setUrl(hasSecondary ? secondaryUrl : primaryUrl);
+    onClick?.();
+  });
 
   for (let rowId = 0; rowId < gridSize; rowId++) {
     for (let colId = 0; colId < gridSize; colId++) {
@@ -32,15 +44,39 @@ function createMagicBackground({ gridSize = 0, rootSize = 0, gifUrl = "" }) {
   return {
     root,
     onResize: function () {
-      setRootSize(window.innerWidth <= rootSize ? window.innerWidth : rootSize);
+      setBoxSize(window.innerWidth <= rootSize ? window.innerWidth : rootSize);
     },
   };
+}
+
+let timeoutId;
+
+function showTerrorEffect() {
+  const body = document.body;
+  const terrorSound = document.getElementById("terror-sound");
+
+  body.classList.toggle("dark");
+
+  function stopSound() {
+    terrorSound.pause();
+    terrorSound.currentTime = 0;
+    clearTimeout(timeoutId);
+  }
+
+  if (body.classList.contains("dark")) {
+    terrorSound.currentTime = 0;
+    terrorSound.play();
+    window.navigator?.vibrate?.(200);
+    timeoutId = setTimeout(stopSound, 3100);
+  } else stopSound();
 }
 
 const component = createMagicBackground({
   gridSize: 4,
   rootSize: 500,
-  gifUrl: "https://media.giphy.com/media/8ciNNLBwEfNZrPm9l8/giphy.gif",
+  primaryUrl: "https://media.giphy.com/media/4Zo41lhzKt6iZ8xff9/giphy.gif",
+  secondaryUrl: "https://media.giphy.com/media/3CIxYBdTB4KjYGtfGC/giphy.gif",
+  onClick: showTerrorEffect,
 });
 
 document.body.append(component.root);
