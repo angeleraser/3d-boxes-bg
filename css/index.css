@@ -1,0 +1,71 @@
+@import url("./reset.min.css");
+
+:root {
+  --black: #191717;
+  --gray: #7d7c7c;
+}
+
+.app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  min-height: 100vh;
+  gap: 32px;
+  flex-wrap: wrap;
+  background-color: var(--black);
+  padding: 20px;
+}
+
+.background {
+  --bg-size: 400px;
+  --bg-url: url("");
+
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+  display: grid;
+  height: var(--bg-size);
+  width: var(--bg-size);
+}
+
+.background-box {
+  background-image: var(--bg-url);
+  background-repeat: no-repeat;
+  background-size: var(--bg-size) var(--bg-size);
+  height: 100%;
+  position: relative;
+  transition: 0.4s transform ease-in-out;
+  width: 100%;
+}
+
+.background.animated {
+  gap: calc(var(--bg-size) * 0.05);
+}
+
+.background.animated .background-box {
+  transform: rotate(1turn);
+}
+
+.background-box::after,
+.background-box::before {
+  background-color: var(--gray);
+  content: "";
+  display: inline-block;
+  position: absolute;
+}
+
+.background-box::after {
+  height: 100%;
+  right: calc(100% * -0.1);
+  top: calc(100% * 0.05);
+  transform: skewY(45deg);
+  width: calc(100% * 0.1);
+}
+
+.background-box::before {
+  bottom: calc(100% * -0.1);
+  height: calc(100% * 0.1);
+  left: calc(100% * 0.05);
+  transform: skewX(45deg);
+  width: 100%;
+}
