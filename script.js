@@ -15,7 +15,7 @@ function showTerrorEffect() {
     terrorSound.currentTime = 0;
     terrorSound.play();
     window.navigator?.vibrate?.(1500);
-    timeoutId = setTimeout(stopSound, 3100);
+    timeoutId = setTimeout(stopSound, 3150);
   } else stopSound();
 }
 
