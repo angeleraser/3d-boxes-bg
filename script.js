@@ -7,7 +7,7 @@ function createMagicBackground({ gridSize = 0, rootSize = 0, gifUrl = "" }) {
   const root = document.createElement("div");
 
   function setRootSize(value) {
-    const marginX = 60;
+    const marginX = value * 0.1;
     root.style.setProperty("--bg-size", `${value - marginX}px`);
   }
 
@@ -39,7 +39,7 @@ function createMagicBackground({ gridSize = 0, rootSize = 0, gifUrl = "" }) {
 
 const component = createMagicBackground({
   gridSize: 4,
-  rootSize: 600,
+  rootSize: 500,
   gifUrl: "https://media.giphy.com/media/8ciNNLBwEfNZrPm9l8/giphy.gif",
 });
 
